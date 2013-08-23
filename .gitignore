@@ -19,6 +19,7 @@ Web.Local.config
 *.pubxml
 TODO.txt
 .svn
+thumbs.db
 
 # Build results
 [Dd]ebug/
