@@ -20,6 +20,8 @@ Web.Local.config
 TODO.txt
 .svn
 thumbs.db
+[Ss]ources/
+[tt]emp/
 
 # Build results
 [Dd]ebug/
