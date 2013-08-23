@@ -1,0 +1,31 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+
+//Set stripe key
+Stripe.setPublishableKey('@Model.Payment.Stripe.PublishableKey');
+
+//Create stripe token
+Stripe.createToken({
+	name: "@Model.User.FullName",
+	number: $('#credit-card-number').val(),
+	cvc: $('#security-number').val(),
+	exp_month: $('#exp-month').val(),
+	exp_year: $('#exp-year').val()
+}, stripeResponseHandler);
+
+function stripeResponseHandler(status, response) {
+	if (response.error) {
+		//Handle errors
+		$errorTarget.text(response.error.message);
+		$submitButton.attr('disabled', false);
+	} else {
+		var model = @Html.Raw(Json.Encode(Model)); //Encode the model object as a
+			
+		//Set payment vars
+		model.Payment.Stripe.TokenID = response.id;
+		model.Payment.Card.Type = response.card.type;
+		model.Payment.Card.Last4 = response.card.last4;
+			
+		//Process the payment
+		payments.process(model);
+	}
+}

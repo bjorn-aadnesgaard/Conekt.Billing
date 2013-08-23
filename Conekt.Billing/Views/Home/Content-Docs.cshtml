@@ -1,0 +1,303 @@
+﻿@{
+	Layout = "~/Views/Home/Template.cshtml";
+}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("pre").hide();
+	});
+</script>
+
+<div id="docs">
+	<h3>Docs</h3>
+
+	<h4>Project Dependencies</h4>
+	<ul>
+		<li>
+			<a href="http://jquery.com/">jQuery v1.7.1+</a>
+		</li>
+		<li>
+			<a href="https://github.com/jquery/jquery-metadata">jQuery Metadata</a>
+		</li>
+		<li>
+			<a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery Validate 1.9+</a>
+		</li>
+		<li>
+			<a href="http://fgnass.github.com/spin.js/">spin.js v1.2.7+</a>
+		</li>
+	</ul>
+
+	<h4>Validation</h4>
+	
+	<h4>Responsive UI</h4>
+	
+	<h4>Styling</h4>
+
+	<h4>Browser Support</h4>
+	<p>
+		Chrome, Firefox, IE9
+	</p>
+
+@*http://stackoverflow.com/a/13802163/612113*@
+@helper CodeBlock(string title, string description, string defaultValue, Func<object, object> markup) {
+	var key = Guid.NewGuid();
+	<div class="conekt-codeblock @key">
+		<h5 class="title">
+			@title <a href="#" onclick="payments.toggle('.@key pre'); return false;"><i class="icon-plus-sign"></i>Show example</a>
+		</h5>
+		<div class="description">
+			@description
+			@Html.Raw(!string.IsNullOrEmpty(defaultValue) ? "<div class=\"default-value\"><i class=\"icon-ok\"></i>" + defaultValue + "</div>" : null)
+		</div>
+<pre><code>$(function() {
+	@markup.DynamicInvoke(this.ViewContext)});</code></pre>
+	</div>
+}
+
+@*Json Object*@
+<h4>JSON Transaction Object Properties</h4>
+
+@CodeBlock("Account (string)", "This field references the Quickbooks Customer field which is used when importing is enabled. If the customer account does not exist in Quickbooks, it will be created.","",
+	@<text>var transaction = {
+		Account: "Example Customer"
+	}</text>
+	)
+
+@CodeBlock("AccountApiKey (string)", "The API key associated with the account tracking sales data. Can also be set in the web.config for improved security.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er"
+	}</text>
+)
+
+<h4>User (Required)</h4>
+
+@CodeBlock("User.UserName (string)", "The username for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan"
+		}
+	}</text>
+)
+
+@CodeBlock("User.FirstName (string)", "The first name for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan"
+		}
+	}</text>
+)
+
+@CodeBlock("User.LastName (string)", "The last name for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith"
+		}
+	}</text>
+)
+
+@CodeBlock("User.Email (string)", "The email address for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov"
+		}
+	}</text>
+)
+
+@CodeBlock("User.Phone (string)", "The phone number for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128"
+		}
+	}</text>
+)
+
+@CodeBlock("User.Address (string)", "The address for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street"
+		}
+	}</text>
+)
+
+@CodeBlock("User.City (string)", "The city for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls"
+		}
+	}</text>
+)
+
+@CodeBlock("User.Province (string)", "The province/state for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia"
+		}
+	}</text>
+)
+
+@CodeBlock("User.PostalCode (string)", "The postal/zip code for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia",
+			PostalCode: "12345"
+		}
+	}</text>
+)
+
+@CodeBlock("User.Country (string)", "The country for the user making the payment.","",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia",
+			PostalCode: "12345",
+			Country: "USA"
+		}
+	}</text>
+)
+
+<h4>Settings (Optional)</h4>
+
+@CodeBlock("Settings.DisableEmailInvoice (boolean)", "Disables the email invoice notification event when the user completes a payment.","Default value is false",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia",
+			PostalCode: "12345",
+			Country: "USA"
+		}
+		Settings: {
+			DisableEmailInvoice: false
+		}
+	}</text>
+)
+
+@CodeBlock("Settings.DisableRemoteScripts (boolean)", "Disables loading the base scripts from the remote server.","Default value is false",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia",
+			PostalCode: "12345",
+			Country: "USA"
+		}
+		Settings: {
+			DisableEmailInvoice: false,
+			DisableRemoteScripts: false
+		}
+	}</text>
+)
+
+@CodeBlock("Settings.DisableRemoteStyles (boolean)", "Disables loading the base styles from the remote server.","Default value is false",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia",
+			PostalCode: "12345",
+			Country: "USA"
+		}
+		Settings: {
+			DisableEmailInvoice: false,
+			DisableRemoteScripts: false,
+			DisableRemoteStyles: false
+		}
+	}</text>
+)
+
+@CodeBlock("Settings.DisableSummary (boolean)", "Disables the product summary in the payment form.","Default value is false",
+	@<text>var transaction = {
+		Account: "Example Customer",
+		AccountApiKey: "1a167c36-f855-4f2b-8ac8-f831f345f4er",
+		User: {
+			UserName: "Stan",
+			LastName: "Smith",
+			Email: "stan.smith@cia.gov",
+			Phone: "555-5555-0128",
+			Address: "1024 Cherry Street",
+			City; "Langley Falls",
+			Province: "Virginia",
+			PostalCode: "12345",
+			Country: "USA"
+		}
+		Settings: {
+			DisableEmailInvoice: false,
+			DisableRemoteScripts: false,
+			DisableRemoteStyles: false,
+			DisableSummary: false
+		}
+	}</text>
+)
+
+</div>

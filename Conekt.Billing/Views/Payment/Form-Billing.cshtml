@@ -1,0 +1,52 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+@using Conekt.Billing.Models.Form;
+@using Conekt.Billing.Models.Json;
+@using Conekt.Billing.Library;
+
+@{
+	Layout = "~/Views/Payment/Form-Template-Section.cshtml";
+
+	//Form values
+	var address = new Item { Label = "Street Address", InputLimit = 75 };
+	var city = new Item { Label = "City", InputLimit = 45 };
+	var province = new Item { Label = "Province / State", InputLimit = 45 };
+	var postal = new Item { Label = "Postal / Zip Code", InputLimit = 15 };
+	var country = new Item { Label = "Country" };
+
+	//Select the users country
+	<script type="text/javascript">
+		$("#@country.ID").val("@Model.User.Country");
+	</script>
+}
+
+<legend class="title">Billing Details</legend>
+<div class="item @address.CssClass">
+	<label for="@address.ID">@address.Label</label>
+	<input id="@address.ID" name="@address.ID" class="required span12" type="text" value="@Model.User.Address" placeholder="@address.Placeholder" maxlength="@address.InputLimit" />
+</div>
+<div class="item row-fluid">
+	<div class="@city.CssClass span4">
+		<label for="@city.ID">@city.Label</label>
+		<input id="@city.ID" name="@city.ID" class="required" type="text" value="@Model.User.City" placeholder="@city.Placeholder" maxlength="@city.InputLimit" />
+	</div>
+	<div class="@province.CssClass span4">
+		<label for="@province.ID">@province.Label</label>
+		<input id="@province.ID" name="@province.ID" class="required" type="text" value="@Model.User.Province" placeholder="@province.Placeholder" maxlength="@province.InputLimit" />
+	</div>
+	<div class="@postal.CssClass span3">
+		<label for="@postal.ID">@postal.Label</label>
+		<input id="@postal.ID" name="@postal.ID" class="required" type="text" value="@Model.User.PostalCode" placeholder="@postal.Placeholder" maxlength="@postal.InputLimit" />
+	</div>
+</div>
+<div class="item row-fluid">
+	<div class="@country.CssClass span8">
+		<label for="@country.ID">@country.Label</label>
+		<select id="@country.ID" name="@country.ID" class="required" placeholder="@country.Placeholder">
+			<option value=""></option>
+			@foreach (string item in Utility.GetCountryList())
+			{
+				<option value="@item">@item</option>
+			}
+		</select>
+	</div>
+</div>

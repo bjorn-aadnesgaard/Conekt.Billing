@@ -1,0 +1,62 @@
+﻿@using Conekt.Billing.Library;
+@using Conekt.Billing.Models.Json;
+
+@Styles.Render("~/styles/payment")
+@Scripts.Render("~/scripts/payment")
+
+<!--[if lte IE 7]>@Scripts.Render("~/scripts/ie")<![endif]-->
+
+@{
+	//Create the transaction object
+	JsonTransaction jtrans = new JsonTransaction()
+	{
+		Account = "On-Line Profile Customers",
+		Payment = new Payment()
+		{
+			Currency = "CAD",
+			Merchant = Enums.Merchant.Stripe.ToString(),
+			Stripe = new Merchant.Stripe()
+			{
+				PublishableKey = "pk_test_kg1VRMMoClat7wlgznThEksG"
+			}
+		},
+		Settings = new Settings()
+		{
+			//Account settings are used in the email templates used for sending invoice and payment information.
+			Account = new Account()
+			{
+				Name = "Conekt",
+				Website = "conekted.com",
+				Phone = "647-247-2440",
+				Email = "support@conekted.com",
+				CreditAppearAs = "Conekt Payments" //The title payments appear as on credit card statements
+			},
+			DisableEmailInvoice = false,
+			DisableRemoteScripts = true,
+			DisableRemoteStyles = true,
+			DisableSummary = true
+		},
+		User = new User()
+		{
+			UserName = "aadnesgaard",
+			FirstName = "Bjorn",
+			LastName = "Aadnesgaard",
+			Email = "bjorn@conekted.com",
+			Phone = "647-723-5304",
+			Address = "320-1300 Marlborough Court",
+			City = "Oakville",
+			Province = "Ontario",
+			PostalCode = "L6H2S2",
+			Country = "Canada"
+		}
+	};
+
+	//Add products to transaction object
+	jtrans.Products = new List<Product>();
+	jtrans.Products.Add(new Product() { ID = 1, ItemCode = "E1000", Name = "Profile User Plan (Corporate)", Quantity = 45, UnitPrice = 15, TaxRate = 0 });
+	jtrans.Products.Add(new Product() { ID = 2, ItemCode = "E1010", Name = "Team Builder Kit Addon (Corporate)", Quantity = 1, UnitPrice = 250, TaxRate = 0 });
+
+	@Html.Raw(JsonTransaction.CreateScript(jtrans));
+}
+
+<div id="conekt-payment-form"></div>

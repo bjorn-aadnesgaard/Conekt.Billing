@@ -1,0 +1,41 @@
+﻿@{
+	ViewBag.SiteTitle = "Conekt Payments";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.SiteTitle</title>
+	<link rel="icon" type="image/png" href="/favicon.png">
+
+	@Styles.Render("~/content/themes/base/css")
+    @Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/jqueryui")
+
+	<script type="text/javascript" src="//yes.googlecode.com/svn/trunk/jquery/metadata/2.0/jquery.metadata.min.js"></script>
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+	
+	@*Bootstrap styles and scripts*@
+	@Styles.Render("~/styles/bootstrap")
+	@Scripts.Render("~/scripts/bootstrap")
+
+	@Styles.Render("~/styles/payment")
+
+    @RenderSection("scripts", required: false)
+</head>
+<body data-spy="scroll" data-target="#navbar" data-offset="50">
+	@{Html.RenderPartial("Navbar");}
+	<div class="container">
+		@RenderBody()
+		@{ Html.RenderPartial("Footer"); }
+	</div>
+
+	<script type="text/javascript">
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+
+<h2>Thank you.</h2>
+<p>
+	Your transaction is complete and a receipt has been sent to your email address (@Model.User.Email).
+</p>
+
+<p>
+	This receipt confirms payment for your purchase from @Model.Settings.Account.Name. This order will appear on your credit card statement as @Model.Settings.Account.CreditAppearAs. To contact us call @Model.Settings.Account.Phone or email <a href="mailto:@Model.Settings.Account.Email">@Model.Settings.Account.Email</a>.
+</p>
+
+<h3>Receipt</h3>
+<hr />
+<p>
+	@{
+		Html.RenderPartial("Complete-Billing", @Model);
+	}
+</p>
+<hr />
+
+@{
+	Html.RenderPartial("Complete-Summary", @Model);
+}

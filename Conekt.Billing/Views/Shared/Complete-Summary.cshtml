@@ -1,0 +1,106 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+@using Conekt.Billing.Models
+@using Conekt.Billing.Models.Form
+@using Conekt.Billing.Models.Json
+
+@{
+	//Form values
+	var code = new Item { Label = "Code" };
+	var product = new Item { Label = "Product" };
+	var quantity = new Item { Label = "Quantity" };
+	var unitPrice = new Item { Label = "Unit Price" };
+	var subTotal = new Item { Label = "Subtotal" };
+	var tax = new Item { Label = "Tax" };
+	var total = new Item { Label = "Total" };
+
+	//Summary values
+	decimal totalTax = 0;
+
+	//Style values
+	int paddingRight = 20;
+	string separator = "style=\"border-top: 1px solid #EDEDED; margin-top: 10px; padding-top: 10px;\"";
+}
+
+<table style="padding:0px;margin:0px;border-collapse:collapse;border-spacing:0px;" width="100%">
+	<thead>
+		<tr>
+			<td class="@code.CssClass" style="padding-right:@(paddingRight)px;">
+				@code.Label
+			</td>
+			<td class="@product.CssClass" style="padding-right:@(paddingRight)px;">
+				@product.Label
+			</td>
+			<td class="@quantity.CssClass" style="text-align:center;padding-right:@(paddingRight)px;">
+				@quantity.Label
+			</td>
+			<td class="@unitPrice.CssClass" style="text-align:right;padding-right:@(paddingRight)px;">
+				@unitPrice.Label
+			</td>
+			<td class="@subTotal.CssClass last" style="text-align:right;">
+				@subTotal.Label
+			</td>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+			foreach(Product item in Model.Products)
+			{
+				<tr>
+					<td class="@code.CssClass" style="padding-right:@(paddingRight)px;">
+						@item.ID
+					</td>
+					<td class="@product.CssClass" style="padding-right:@(paddingRight)px;">
+						@item.Name
+					</td>
+					<td class="@quantity.CssClass" style="text-align:center;padding-right:@(paddingRight)px;">
+						@item.Quantity
+					</td>
+					<td class="@unitPrice.CssClass" style="text-align:right;padding-right:@(paddingRight)px;">
+						@string.Format("{0:C}", item.UnitPrice)
+					</td>
+					<td class="@subTotal.CssClass last" style="text-align:right;">
+						@string.Format("{0:C}", item.Quantity * item.UnitPrice)
+					</td>
+				</tr>
+
+				totalTax += item.TotalTax;
+			}
+		}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="5">
+				<div @Html.Raw(separator)></div>
+			</td>
+		</tr>
+		<tr class="@subTotal.CssClass" style="text-align:right;">
+			@*Subtotal*@
+			<td colspan="4" style="padding-right:@(paddingRight)px;">
+				Subtotal:
+			</td>
+			<td class="last">
+				@string.Format("{0:C}", Model.Payment.Amount - totalTax)
+			</td>
+		</tr>
+
+		@*Tax Total*@
+		<tr class="@tax.CssClass" style="text-align:right;">
+			<td colspan="4" style="padding-right:@(paddingRight)px;">
+				Tax:
+			</td>
+			<td class="last">
+				@string.Format("{0:C}", totalTax)
+			</td>
+		</tr>
+
+		@*Total*@
+		<tr class="@total.CssClass" style="font-weight:bold;text-align:right;">
+			<td colspan="4" style="padding-right:@(paddingRight)px;">
+				Total @Model.Payment.Currency:
+			</td>
+			<td class="last">
+				@string.Format("{0:C}", Model.Payment.Amount)
+			</td>
+		</tr>
+	</tfoot>
+</table>

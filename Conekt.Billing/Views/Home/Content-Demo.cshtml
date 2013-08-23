@@ -1,0 +1,227 @@
+﻿@using Conekt.Billing.Library
+@using Conekt.Billing.Models
+
+@{
+	Layout = "~/Views/Home/Template.cshtml";
+	string target = "#demo-wrapper";
+	string selectButtonClass = "btn-inverse";
+	string strHelpEmailTitle = "Email recipient";
+	string strHelpEmailBody = "Enter the email address where the payment confirmation and invoice will be sent. <strong>Used for demo purposes only.</strong>";
+}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var $target = $("@target");
+
+		$target.on("hidden", function () {
+			$target.removeClass("modal hide fade");
+			toggleResize($target); //Add resize
+			$target.show();
+		});
+
+		$(".demo-wizard").on("hidden", function () {
+			toggleState();
+		});
+
+		$("#demo .demo-commands a").click(function () {
+			var $target = $("@target");
+			var $this = $(this);
+
+			switch ($this.attr("data-command")) {
+				case "default":
+					setDefault($target);
+					break;
+
+				case "mobile":
+					setDefault($target);
+					$target.width("480");
+					break;
+
+				case "modal":
+					toggleResize($target); //Remove resize
+					setDefault($target);
+					$target.addClass("modal hide fade");
+					$target.modal();
+					break;
+
+				case "wizard":
+					$(".demo-wizard").modal();
+					toggleState($this, "btn-warning");
+					return;
+			};
+
+			toggleState($this);
+		});
+
+		toggleResize($target);
+
+		//Create demo wizard
+		$('.demo-wizard .demo-form').stepy({
+			backLabel: 'Back',
+			nextLabel: 'Next',
+			block: true,
+			errorImage: true,
+			titleClick: true,
+			validate: true,
+			finish: function (index) {
+				if ($(".demo-form").valid()) {
+					demo.create(""); //Create the demo
+					return false; //Prevent form submit
+				}
+			}
+		});
+	});
+
+	//Set styling for default view
+	function setDefault(target) {
+		target.removeAttr("style");
+	}
+
+	//Toggle element as resizeable
+	function toggleResize(target) {
+		if (target.hasClass("ui-resizable")) {
+			target.resizable("destroy");
+		} else {
+			target.resizable({
+				containment: target.parent(),
+				grid: 20,
+				handles: "e, w",
+				minWidth: 480 //Mobile
+			});
+		}
+	}
+
+	//Toggle button state
+	function toggleState(target, selectButtonClass) {
+		if (selectButtonClass == null)
+			selectButtonClass = "@selectButtonClass"
+
+		if (target != null) {
+			//Remove selected class from current button
+			target.parent().find('[class*="btn-"]').removeClass(selectButtonClass);
+
+			//Set button as selected
+			target.addClass(selectButtonClass);
+		}
+		
+		//Reset state
+		else {
+			$('#demo .demo-commands a').removeClass().addClass("btn");
+		}
+	}
+</script>
+
+<div id="demo">
+	<h3>Demo</h3>
+
+	@*Wizard Setup*@
+	@*Create Demo Products*@
+	<p class="demo-commands">
+		<a class="btn" data-command="wizard">Start Wizard</a>
+	</p>
+
+	<div id="wizard" class="demo-wizard modal hide fade">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		</div>
+		<div class="modal-body">
+			<form class="demo-form demo-wizard-container">
+				@*Overview*@
+				<fieldset>
+					<legend>Overview</legend>
+					@*@{
+						//Create notification
+						Notification nfn = new Notification()
+						{
+							DisableAnimation = true,
+							DisableClose = true,
+							Message = "This demo has 2 products whose properties can be adjusted as required.",
+							Status = Enums.Status.Warning
+						};
+						Html.RenderPartial("Notification", nfn);
+					}*@
+					<p>This demo will provide you with a walk through of the payment process using the Conekt Billing app. Sample products and a recipient email address are required for this demo.</p>
+					<p>No personal data entered will be tracked or stored.</p>
+					<p class="clear-spacing">Click <strong>Next</strong> to get started.</p>
+				</fieldset>
+				
+				@*Products*@
+				<fieldset>
+					<legend>Products</legend>
+					<div class="row-fluid">
+						<div class="span6">
+							<label for="product1">Product Name</label>
+							<input id="product1" name="productname1" type="text" class="span12 required alphanumeric" value="A basic product" />
+						</div>
+						<div class="span2">
+							<label for="qty1">Qty</label>
+							<input id="qty1" name="qty" type="text" class="span12 required number" value="10" maxlength="3" />
+						</div>
+						<div class="span2">
+							<label for="cost1">Unit Cost</label>
+							<input id="cost1" name="cost" type="text" class="span12 required number" value="10.00" maxlength="5" />
+						</div>
+						<div class="span2">
+							<label for="taxrate1">Tax Rate</label>
+							<input id="taxrate1" name="taxrate" type="text" class="span12 required number" value="0" maxlength="2" />
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<label for="product2">Product Name</label>
+							<input id="product2" name="productname2" type="text" class="span12 required alphanumeric" value="A value added option" />
+						</div>
+						<div class="span2">
+							<label for="qty2">Qty</label>
+							<input id="qty2" name="qty2" type="text" class="span12 required number" value="10" maxlength="3" />
+						</div>
+						<div class="span2">
+							<label for="cost2">Unit Cost</label>
+							<input id="cost2" name="cost2" type="text" class="span12 required number" value="10.00" maxlength="5" />
+						</div>
+						<div class="span2">
+							<label for="taxrate2">Tax Rate</label>
+							<input id="taxrate2" name="taxrate2" type="text" class="span12 required number" value="0" maxlength="2" />
+						</div>
+					</div>
+				</fieldset>
+
+				@*User*@
+				<fieldset>
+					<legend>Settings</legend>
+					<div class="row-fluid">
+						<div class="span6">
+							<label for="email">
+								Email
+								<a href="#" class="icon-question-sign" rel="popover" data-placement="right" data-title="@strHelpEmailTitle" data-content="@strHelpEmailBody"></a>
+							</label>
+							<input id="email" name="email" type="text" class="span12 required email" placeholder="your-email@domain.com" />
+						</div>
+					</div>
+				</fieldset>
+
+				<input type="submit" class="btn btn-inverse finish" value="Create" />
+			</form>
+		</div>
+		<div class="modal-footer"></div>
+	</div>
+
+	<div id="demo-content"></div>
+
+@*	<p>
+		These examples will demonstrate the various layout options for presenting the payment interface. You may drag the default view to increase or decrease the display width as desired.
+		The min and max widths are set to 480px and 960px for this demo.
+	</p>
+	<p class="demo-commands btn-group">
+		<a class="btn" data-command="default">Default</a>
+		<a class="btn" data-command="mobile">Mobile</a>
+		<a class="btn" data-command="modal">Modal</a>
+	</p>
+
+	<div id="demo-wrapper" style="display:none">
+		<button type="button" class="close hidden" data-dismiss="modal" aria-hidden="true">×</button>
+		@{
+			Html.RenderPartial("Demo");
+		}
+	</div>*@
+</div>

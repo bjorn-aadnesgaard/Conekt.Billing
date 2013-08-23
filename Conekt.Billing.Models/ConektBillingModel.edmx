@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ConektBillingModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ConektBillingModelStoreContainer">
+          <EntitySet Name="Account" EntityType="ConektBillingModel.Store.Account" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AccountContact" EntityType="ConektBillingModel.Store.AccountContact" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AccountKey" EntityType="ConektBillingModel.Store.AccountKey" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AccountRole" EntityType="ConektBillingModel.Store.AccountRole" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Transaction" EntityType="ConektBillingModel.Store.Transaction" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TransactionImport" EntityType="ConektBillingModel.Store.TransactionImport" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TransactionItem" EntityType="ConektBillingModel.Store.TransactionItem" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TransactionUser" EntityType="ConektBillingModel.Store.TransactionUser" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_AccountContact_Account" Association="ConektBillingModel.Store.FK_AccountContact_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountContact" EntitySet="AccountContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountContact_AccountRole" Association="ConektBillingModel.Store.FK_AccountContact_AccountRole">
+            <End Role="AccountRole" EntitySet="AccountRole" />
+            <End Role="AccountContact" EntitySet="AccountContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountKey_Account" Association="ConektBillingModel.Store.FK_AccountKey_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountKey" EntitySet="AccountKey" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transaction_Account" Association="ConektBillingModel.Store.FK_Transaction_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Transaction" EntitySet="Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionImport_Transaction" Association="ConektBillingModel.Store.FK_TransactionImport_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="TransactionImport" EntitySet="TransactionImport" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionItem_Transaction" Association="ConektBillingModel.Store.FK_TransactionItem_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="TransactionItem" EntitySet="TransactionItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Transaction" Association="ConektBillingModel.Store.FK_User_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="TransactionUser" EntitySet="TransactionUser" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MerchantApiKey" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PassPhrase" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AccountContact">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountRoleID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Phone" Type="varchar(max)" Nullable="false" />
+          <Property Name="PhoneExt" Type="int" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AccountKey">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApiKey" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Nullable="false" />
+          <Property Name="DateUpdated" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="AccountRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ChargeRequestID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Merchant" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PaymentMethod" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PaymentLast4" Type="int" />
+          <Property Name="Currency" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Total" Type="decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="QuickbooksCustomer" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionImport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransactionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransactionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="UnitPrice" Type="decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="TaxRate" Type="decimal" Nullable="false" Precision="2" Scale="2" />
+        </EntityType>
+        <EntityType Name="TransactionUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransactionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Phone" Type="varchar(max)" Nullable="false" />
+          <Property Name="PhoneExt" Type="int" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AccountContact_Account">
+          <End Role="Account" Type="ConektBillingModel.Store.Account" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AccountContact" Type="ConektBillingModel.Store.AccountContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountContact">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountContact_AccountRole">
+          <End Role="AccountRole" Type="ConektBillingModel.Store.AccountRole" Multiplicity="1" />
+          <End Role="AccountContact" Type="ConektBillingModel.Store.AccountContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountRole">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountContact">
+              <PropertyRef Name="AccountRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountKey_Account">
+          <End Role="Account" Type="ConektBillingModel.Store.Account" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AccountKey" Type="ConektBillingModel.Store.AccountKey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountKey">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_Account">
+          <End Role="Account" Type="ConektBillingModel.Store.Account" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Transaction" Type="ConektBillingModel.Store.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionImport_Transaction">
+          <End Role="Transaction" Type="ConektBillingModel.Store.Transaction" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TransactionImport" Type="ConektBillingModel.Store.TransactionImport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TransactionImport">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionItem_Transaction">
+          <End Role="Transaction" Type="ConektBillingModel.Store.Transaction" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TransactionItem" Type="ConektBillingModel.Store.TransactionItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TransactionItem">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Transaction">
+          <End Role="Transaction" Type="ConektBillingModel.Store.Transaction" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TransactionUser" Type="ConektBillingModel.Store.TransactionUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TransactionUser">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConektBillingModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="ConektBillingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Account" EntityType="ConektBillingModel.Account" />
+          <EntitySet Name="AccountContact" EntityType="ConektBillingModel.AccountContact" />
+          <EntitySet Name="AccountKey" EntityType="ConektBillingModel.AccountKey" />
+          <EntitySet Name="AccountRole" EntityType="ConektBillingModel.AccountRole" />
+          <EntitySet Name="Transaction" EntityType="ConektBillingModel.Transaction" />
+          <EntitySet Name="TransactionImport" EntityType="ConektBillingModel.TransactionImport" />
+          <EntitySet Name="TransactionItem" EntityType="ConektBillingModel.TransactionItem" />
+          <EntitySet Name="TransactionUser" EntityType="ConektBillingModel.TransactionUser" />
+          <AssociationSet Name="FK_AccountContact_Account" Association="ConektBillingModel.FK_AccountContact_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountContact" EntitySet="AccountContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountKey_Account" Association="ConektBillingModel.FK_AccountKey_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountKey" EntitySet="AccountKey" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transaction_Account" Association="ConektBillingModel.FK_Transaction_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Transaction" EntitySet="Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountContact_AccountRole" Association="ConektBillingModel.FK_AccountContact_AccountRole">
+            <End Role="AccountRole" EntitySet="AccountRole" />
+            <End Role="AccountContact" EntitySet="AccountContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionImport_Transaction" Association="ConektBillingModel.FK_TransactionImport_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="TransactionImport" EntitySet="TransactionImport" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionItem_Transaction" Association="ConektBillingModel.FK_TransactionItem_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="TransactionItem" EntitySet="TransactionItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Transaction" Association="ConektBillingModel.FK_User_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="TransactionUser" EntitySet="TransactionUser" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MerchantApiKey" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PassPhrase" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" />
+          <NavigationProperty Name="AccountContact" Relationship="ConektBillingModel.FK_AccountContact_Account" FromRole="Account" ToRole="AccountContact" />
+          <NavigationProperty Name="AccountKey" Relationship="ConektBillingModel.FK_AccountKey_Account" FromRole="Account" ToRole="AccountKey" />
+          <NavigationProperty Name="Transaction" Relationship="ConektBillingModel.FK_Transaction_Account" FromRole="Account" ToRole="Transaction" />
+        </EntityType>
+        <EntityType Name="AccountContact">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="AccountID" Nullable="false" />
+          <Property Type="Guid" Name="AccountRoleID" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="PhoneExt" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Account" Relationship="ConektBillingModel.FK_AccountContact_Account" FromRole="AccountContact" ToRole="Account" />
+          <NavigationProperty Name="AccountRole" Relationship="ConektBillingModel.FK_AccountContact_AccountRole" FromRole="AccountContact" ToRole="AccountRole" />
+        </EntityType>
+        <EntityType Name="AccountKey">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="AccountID" Nullable="false" />
+          <Property Type="Guid" Name="ApiKey" Nullable="false" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" />
+          <Property Type="DateTime" Name="DateUpdated" />
+          <NavigationProperty Name="Account" Relationship="ConektBillingModel.FK_AccountKey_Account" FromRole="AccountKey" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="AccountRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AccountContact" Relationship="ConektBillingModel.FK_AccountContact_AccountRole" FromRole="AccountRole" ToRole="AccountContact" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="AccountID" Nullable="false" />
+          <Property Type="String" Name="ChargeRequestID" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Merchant" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PaymentMethod" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="PaymentLast4" />
+          <Property Type="String" Name="Currency" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="Total" Nullable="false" Precision="8" Scale="2" />
+          <Property Type="String" Name="QuickbooksCustomer" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="ConektBillingModel.FK_Transaction_Account" FromRole="Transaction" ToRole="Account" />
+          <NavigationProperty Name="TransactionImport" Relationship="ConektBillingModel.FK_TransactionImport_Transaction" FromRole="Transaction" ToRole="TransactionImport" />
+          <NavigationProperty Name="TransactionItem" Relationship="ConektBillingModel.FK_TransactionItem_Transaction" FromRole="Transaction" ToRole="TransactionItem" />
+          <NavigationProperty Name="TransactionUser" Relationship="ConektBillingModel.FK_User_Transaction" FromRole="Transaction" ToRole="TransactionUser" />
+        </EntityType>
+        <EntityType Name="TransactionImport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="TransactionID" Nullable="false" />
+          <Property Type="Guid" Name="BatchID" Nullable="false" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" />
+          <NavigationProperty Name="Transaction" Relationship="ConektBillingModel.FK_TransactionImport_Transaction" FromRole="TransactionImport" ToRole="Transaction" />
+        </EntityType>
+        <EntityType Name="TransactionItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="TransactionID" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="TaxRate" Nullable="false" Precision="2" Scale="2" />
+          <NavigationProperty Name="Transaction" Relationship="ConektBillingModel.FK_TransactionItem_Transaction" FromRole="TransactionItem" ToRole="Transaction" />
+        </EntityType>
+        <EntityType Name="TransactionUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="TransactionID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="PhoneExt" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Transaction" Relationship="ConektBillingModel.FK_User_Transaction" FromRole="TransactionUser" ToRole="Transaction" />
+        </EntityType>
+        <Association Name="FK_AccountContact_Account">
+          <End Type="ConektBillingModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="ConektBillingModel.AccountContact" Role="AccountContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountContact">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountKey_Account">
+          <End Type="ConektBillingModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="ConektBillingModel.AccountKey" Role="AccountKey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountKey">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaction_Account">
+          <End Type="ConektBillingModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="ConektBillingModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountContact_AccountRole">
+          <End Type="ConektBillingModel.AccountRole" Role="AccountRole" Multiplicity="1" />
+          <End Type="ConektBillingModel.AccountContact" Role="AccountContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountRole">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountContact">
+              <PropertyRef Name="AccountRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionImport_Transaction">
+          <End Type="ConektBillingModel.Transaction" Role="Transaction" Multiplicity="1" />
+          <End Type="ConektBillingModel.TransactionImport" Role="TransactionImport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TransactionImport">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionItem_Transaction">
+          <End Type="ConektBillingModel.Transaction" Role="Transaction" Multiplicity="1" />
+          <End Type="ConektBillingModel.TransactionItem" Role="TransactionItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TransactionItem">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Transaction">
+          <End Type="ConektBillingModel.Transaction" Role="Transaction" Multiplicity="1" />
+          <End Type="ConektBillingModel.TransactionUser" Role="TransactionUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TransactionUser">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConektBillingModelStoreContainer" CdmEntityContainer="ConektBillingEntities">
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="ConektBillingModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="PassPhrase" ColumnName="PassPhrase" />
+                <ScalarProperty Name="MerchantApiKey" ColumnName="MerchantApiKey" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountContact">
+            <EntityTypeMapping TypeName="ConektBillingModel.AccountContact">
+              <MappingFragment StoreEntitySet="AccountContact">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="AccountRoleID" ColumnName="AccountRoleID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountKey">
+            <EntityTypeMapping TypeName="ConektBillingModel.AccountKey">
+              <MappingFragment StoreEntitySet="AccountKey">
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ApiKey" ColumnName="ApiKey" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountRole">
+            <EntityTypeMapping TypeName="ConektBillingModel.AccountRole">
+              <MappingFragment StoreEntitySet="AccountRole">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transaction">
+            <EntityTypeMapping TypeName="ConektBillingModel.Transaction">
+              <MappingFragment StoreEntitySet="Transaction">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="QuickbooksCustomer" ColumnName="QuickbooksCustomer" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="PaymentLast4" ColumnName="PaymentLast4" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Merchant" ColumnName="Merchant" />
+                <ScalarProperty Name="ChargeRequestID" ColumnName="ChargeRequestID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionImport">
+            <EntityTypeMapping TypeName="ConektBillingModel.TransactionImport">
+              <MappingFragment StoreEntitySet="TransactionImport">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionItem">
+            <EntityTypeMapping TypeName="ConektBillingModel.TransactionItem">
+              <MappingFragment StoreEntitySet="TransactionItem">
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionUser">
+            <EntityTypeMapping TypeName="ConektBillingModel.TransactionUser">
+              <MappingFragment StoreEntitySet="TransactionUser">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneExt" ColumnName="PhoneExt" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="ConektBillingModel">
+        <EntityTypeShape EntityType="ConektBillingModel.Account" Width="1.5" PointX="0.75" PointY="8.125" Height="2.5571907552083317" />
+        <EntityTypeShape EntityType="ConektBillingModel.AccountContact" Width="1.5" PointX="6" PointY="5.875" Height="2.9417936197916674" />
+        <EntityTypeShape EntityType="ConektBillingModel.AccountKey" Width="1.5" PointX="3" PointY="7.125" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="ConektBillingModel.AccountRole" Width="1.5" PointX="3.75" PointY="4.625" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="ConektBillingModel.Transaction" Width="1.5" PointX="3" PointY="12.625" Height="4.0956022135416728" />
+        <EntityTypeShape EntityType="ConektBillingModel.TransactionImport" Width="1.5" PointX="5.25" PointY="10.25" Height="1.9802864583333388" />
+        <EntityTypeShape EntityType="ConektBillingModel.TransactionItem" Width="1.5" PointX="5.25" PointY="13" Height="2.5571907552083388" />
+        <EntityTypeShape EntityType="ConektBillingModel.TransactionUser" Width="1.5" PointX="5.25" PointY="16.25" Height="2.7494921875000031" />
+        <AssociationConnector Association="ConektBillingModel.FK_AccountContact_Account" >
+          <ConnectorPoint PointX="2.25" PointY="9.8699446614583337" />
+          <ConnectorPoint PointX="7.15625" PointY="9.8699446614583337" />
+          <ConnectorPoint PointX="7.15625" PointY="8.8167936197916674" />
+        </AssociationConnector>
+        <AssociationConnector Association="ConektBillingModel.FK_AccountKey_Account" >
+          <ConnectorPoint PointX="2.25" PointY="8.8074446614583337" />
+          <ConnectorPoint PointX="3" PointY="8.8074446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="ConektBillingModel.FK_Transaction_Account" >
+          <ConnectorPoint PointX="1.5" PointY="10.682190755208332" />
+          <ConnectorPoint PointX="1.5" PointY="14.672801106770837" />
+          <ConnectorPoint PointX="3" PointY="14.672801106770837" />
+        </AssociationConnector>
+        <AssociationConnector Association="ConektBillingModel.FK_AccountContact_AccountRole" >
+          <ConnectorPoint PointX="5.25" PointY="6.0478417968750016" />
+          <ConnectorPoint PointX="6" PointY="6.0478417968750016" />
+        </AssociationConnector>
+        <AssociationConnector Association="ConektBillingModel.FK_TransactionImport_Transaction" >
+          <ConnectorPoint PointX="3.75" PointY="12.625" />
+          <ConnectorPoint PointX="3.75" PointY="11.240143229166669" />
+          <ConnectorPoint PointX="5.25" PointY="11.240143229166669" />
+        </AssociationConnector>
+        <AssociationConnector Association="ConektBillingModel.FK_TransactionItem_Transaction" >
+          <ConnectorPoint PointX="4.5" PointY="14.278595377604169" />
+          <ConnectorPoint PointX="5.25" PointY="14.278595377604169" />
+        </AssociationConnector>
+        <AssociationConnector Association="ConektBillingModel.FK_User_Transaction" >
+          <ConnectorPoint PointX="4.5" PointY="16.485301106770837" />
+          <ConnectorPoint PointX="5.25" PointY="16.485301106770837" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,289 @@
+﻿<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" type="text/javascript"></script>
+<script src="http://yes.googlecode.com/svn/trunk/jquery/metadata/2.0/jquery.metadata.min.js" type="text/javascript"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js" type="text/javascript"></script>
+
+@*Templates*@
+<script id="product" type="text/x-jquery-tmpl">
+	<div class="product" data-id="${ID}" data-name="${Name}" data-description="${Description}" data-unitprice="${UnitPrice}" data-taxrate="${TaxRate}" data-isaddon="${IsAddon}">
+		{{if IsAddon}}
+			<input id="txt${ID}" class="qty" type="checkbox" />
+		{{else}}
+			<input id="txt${ID}" class="qty number" type="text" size="5" maxlength="5" style="width:30px;" /> x 
+		{{/if}}
+			
+		<label for="txt${ID}">${Name} ($${UnitPrice})</label>
+
+		{{if Description != null && Description != ""}}
+			<span class="description icon icon-16 icon-help" title="${Description}">&nbsp;</span>
+		{{/if}}
+	</div>
+</script>
+<script id="cart-item" type="text/x-jquery-tmpl">
+	<li class="item" data-id="${ID}" data-unitprice="${UnitPrice}" data-taxrate="${TaxRate}" data-quantity="${Quantity}">
+		<label class="name">
+			${Name}
+			{{if Description != null && Description != ""}}
+				<span class="description icon icon-16 icon-help" title="${Description}">&nbsp;</span>
+			{{/if}}
+		</label>
+		<label class="quantity">
+			${Quantity}
+		</label>
+		<label class="unit-cost">$${UnitPrice}</label>
+		<label class="tax-rate">${TaxRate}%</label>
+		<label class="amount">$${Amount}</label>
+	</li>
+</script>
+<script id="cart-item-empty" type="text/x-jquery-tmpl">
+	<li class="empty">
+		Your cart is currently empty. Please add more products.
+	</li>
+</script>
+<script id="summary-item" type="text/x-jquery-tmpl">
+	<li class="item" data-id="${ID}">
+		<label>${Description}:</label>
+		<label>$${Amount}</label>
+	</li>
+</script>
+
+<script id="loader" type="text/x-jquery-tmpl">
+	<span class="icon icon-16 ui-autocomplete-loading"></span>
+</script>
+
+@*Scripts*@
+<!--[if IE]>
+<script type="text/javascript">
+	function AddRowColorSupport() {
+		//Row color support for IE
+		$('.cart .items .item:even').addClass('item-even');
+	}
+
+	$(document).ready(function () {
+		AddRowColorSupport();
+	});
+</script>
+<![endif]-->
+<script type="text/javascript">
+	var products = [
+	{ ID: "1", Name: "Profile User Plan", Description: "", Quantity: "3", UnitPrice: "5.00", TaxRate: "13", Amount: "15.00", IsAddon: false },
+	{ ID: "2", Name: "Team Builder Kit Addon", Description: "The Team Builder Kit contains the following: <ul><li>Instructions for the team leaders on how to order the on-line profile for each team member.</li><li>An Instructor's Guide to help debrief the participants and lead a classroom or group discussion after they have received their results.</li></ul>", Quantity: "1", UnitPrice: "250.00", TaxRate: "13", Amount: "250.00", IsAddon: true },
+	{ ID: "3", Name: "eWorkshop Team Addon", Description: "The Simplexity online workshop is a fun, interactive, virtual session that gives you a basic understanding of how the Simplexity system works, allows you to contribute more effectively in a facilitated session and refreshes your mind to solidify what you learned when you attended a Simplexity Thinking Workshop.", Quantity: "1", UnitPrice: "99.00", TaxRate: "13", Amount: "99.00", IsAddon: true }
+	];
+
+	$(document).ready(function () {
+		$("#form-cart").validate({});
+
+		//Add products to list
+		$("#product").tmpl(products).appendTo("#products");
+		$("#cart-item").tmpl(products).appendTo(".cart .items");
+
+		$('#products .product .qty').change(function () {
+			var $this = $(this);
+			var $parent = $(this).parent(".product");
+			var qty = $parent.data("isaddon") ? 1 : $this.val();
+			var unitPrice = $parent.data("unitprice");
+			var taxRate = $parent.data("taxrate");
+
+			var product = {
+				ID: $parent.data("id"),
+				Name: $parent.data("name"),
+				Description: $parent.data("description"),
+				Quantity: qty,
+				UnitPrice: (Math.round(unitPrice * 100) / 100).toFixed(2),
+				TaxRate: taxRate,
+				Amount: (Math.round(((qty * unitPrice)) * 100) / 100).toFixed(2),
+				IsAddon: $parent.IsAddon
+			};
+
+			//Handle checkbox
+			if ($this.is(':checkbox')) {
+				if (this.checked) {
+					AddItem(product);
+				} else {
+					RemoveItem(product);
+				}
+
+				//Handle textfield
+			} else {
+				if ($this.val() > 0) {
+					AddItem(product)
+				}
+				else {
+					RemoveItem(product);
+				}
+			}
+
+			CreateTooltips();
+			SetupCart();
+			CalculateSummary();
+		});
+
+		$('#checkout').click(function () {
+			Checkout();
+		});
+
+		CreateTooltips();
+		SetupCart();
+		CalculateSummary();
+		Checkout();
+	});
+
+	function AddItem(product) {
+		var item = $(".cart .items").find("[data-id='" + product.ID + "']");
+
+		//Remove existing item new item
+		if (item != null)
+			item.remove();
+
+		//Add new item
+		$("#cart-item").tmpl(product).hide().css("opacity", 0).appendTo(".cart .items").slideDown("fast", function () {
+			$(this).fadeTo("fast", 1.00);
+		});
+	}
+
+	function AddSummaryItem(object) {
+		var item = $(".cart .summary").find("[data-id='" + object.ID + "']");
+
+		//Remove existing item new item
+		if (item != null)
+			item.remove();
+
+		//Add new item
+		$("#summary-item").tmpl(object).appendTo(".cart .summary");
+	}
+
+	function RemoveItem(product) {
+		$(".cart .items").find("[data-id='" + product.ID + "']").remove();
+		//$(".cart .items").find("[data-id='" + product.ID + "']").fadeTo("fast", 0.00, function () {
+		//	$(this).slideUp("fast", function () {
+		//		$(this).remove();
+		//	});
+		//});
+	}
+
+	function SetupCart() {
+		var hasItems = $(".cart .items .item").size() > 0;
+		var hasEmptyItem = $(".cart .items .empty").size() > 0;
+
+		if (!hasItems && !hasEmptyItem) {
+			//Add empty record
+			$("#cart-item-empty").tmpl().appendTo(".cart .items");
+			$(".cart .commands").hide();
+			$(".cart .summary").hide();
+			$(".cart .header").hide();
+		} else {
+			//Remove empty record
+			$(".cart .items").find(".empty").remove();
+			$(".cart .commands").show();
+			$(".cart .summary").show();
+			$(".cart .header").show();
+		}
+	}
+
+	function CalculateSummary() {
+		var hasItems = $(".cart .items .item").size() > 0;
+
+		if (!hasItems)
+			return;
+
+		var subtotal = { ID: '1', Description: 'Subtotal', Amount: '0' };
+		var tax = { ID: '2', Description: 'Tax', Amount: '0' };
+		var total = { ID: '3', Description: 'Total', Amount: '0' };
+
+
+		$('.cart .items .item').each(function (i, obj) {
+			var $this = $(this);
+			currentTaxAmount = tax.Amount;
+			subtotal.Amount = (Math.round((($this.data("unitprice") * $this.data("quantity"))) * 100) / 100 + parseFloat(subtotal.Amount)).toFixed(2);
+			tax.Amount = (Math.round(((($this.data("unitprice") * $this.data("quantity")) * (($this.data("taxrate") / 100)))) * 100) / 100 + parseFloat(tax.Amount)).toFixed(2);
+		});
+
+		total.Amount = ((((parseFloat(subtotal.Amount) + parseFloat(tax.Amount)) * 100) / 100)).toFixed(2);
+
+		AddSummaryItem(subtotal);
+		AddSummaryItem(tax);
+		AddSummaryItem(total);
+	}
+
+	function Checkout() {
+		var $target = $("#checkout-form");
+		$target.spin();
+
+		var transaction = {
+			User: {
+				UserName: 'aadnesgaard',
+				Personal: {
+					FirstName: 'Bjorn',
+					LastName: 'Aadnesgaard',
+					Email: 'bjorn@conekted.com',
+					Phone: '6472472440'
+				},
+				Billing: {
+					Address: '320-1300 Marlborough Court',
+					City: 'Oakville',
+					Province: 'Ontario',
+					PostalCode: 'L6H2S2',
+					Country: 'Canada'
+				}
+			},
+			Settings: {
+				EnableRemoteStyles: true,
+				EnableRemoteScripts: false
+			},
+			Product: {
+				Item: {
+					ID: 1,
+					Name: "Sample item 2"
+				},
+				Item: {
+					ID: 2,
+					Name: "Sample item 2"
+				}
+			}
+		};
+		$.ajax({
+			url: '/checkout',
+			type: 'POST',
+			data: JSON.stringify(transaction),
+			contentType: 'application/json;charset=utf-8',
+			success: function (data) {
+				$target.html(data);
+				CreateTooltips();
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				$target.html(jqXHR.responseText);
+			}
+		});
+	}
+</script>
+
+@Scripts.Render("~/scripts/cart")
+
+<form id="form-cart">
+
+	@*Products*@
+	<li class="one" style="display:none">
+		<h3>Products</h3>
+		<div id="products"></div>
+	</li>
+
+	@*Cart*@
+	<li class="two" style="display:none">
+		<h3>Shopping Cart</h3>
+		<div class="cart">
+			<ul class="items">
+				<li class="header">
+					<label class="name">Product</label>
+					<label class="quantity">Qty</label>
+					<label class="unit-cost">Unit Price</label>
+					<label class="tax-rate">Tax Rate</label>
+					<label class="amount">Amount</label>
+				</li>
+			</ul>
+			<ul class="summary"></ul>
+			<div class="commands">
+				<button id="checkout" value="Checkout" onclick="return false;">Checkout</button>
+			</div>
+		</div>
+	</li>
+</form>

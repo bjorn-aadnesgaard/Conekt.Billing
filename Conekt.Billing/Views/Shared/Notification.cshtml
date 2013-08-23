@@ -1,0 +1,50 @@
+﻿@model Conekt.Billing.Models.Notification
+@using Conekt.Billing.Models;
+@using Conekt.Billing.Library;
+
+@{
+	Guid key = Guid.NewGuid();
+
+	//Set status icon
+	string icon = "";
+	switch(Model.Status)
+	{
+		case Enums.Status.Error:
+			icon = "icon-warning-sign";
+			break;
+
+		case Enums.Status.Info:
+			icon = "icon-info-sign";
+			break;
+
+		case Enums.Status.Success:
+			icon = "icon-ok-sign";
+			break;
+
+		case Enums.Status.Warning:
+			icon = "icon-warning-sign";
+			break;
+	}
+}
+
+@if (!Model.DisableAnimation)
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			payments.toggle(".@key");
+		});
+	</script>
+}
+
+<div class="conekt-notification @key" @(!Model.DisableAnimation ? "style=display:none;opacity:0;filter:alpha(opacity=0);" : null) @(!Model.DisableClose ? "onclick=payments.toggle('." + @key + "'); title=Close" : null)>
+	<div class="cn-content @("cn-" + Model.Status.ToString().ToLower()) @(!Model.DisableClose ? "cn-linked" : null)">
+		<div class="cn-message">
+			<i class="ui-button-icon-primary icon-white @icon"></i>
+			<span class="cn-text">@MvcHtmlString.Create(Model.Message)</span>
+			@if (!Model.DisableClose)
+			{
+				<a class="ui-button-icon-secondary icon-white icon-remove" onclick="payments.toggle('.@key');return false;"></a>
+			}
+		</div>
+	</div>
+</div>

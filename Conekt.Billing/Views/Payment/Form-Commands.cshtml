@@ -1,0 +1,15 @@
+﻿@{
+	//Form values
+	string summary = "Your credit card will be charged <strong>{0:C} ({1})</strong>";
+}
+
+@*Total Review*@
+<p>
+	@MvcHtmlString.Create(string.Format(summary, @Model.Payment.Amount, @Model.Payment.Currency))
+</p>
+		
+@*Commands*@
+<button id="submit-button" class="btn btn-info" type="submit">
+	<span class="text">Process Payment</span>
+</button>
+<div id="loading-icon" class="icon"></div>

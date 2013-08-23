@@ -1,0 +1,6 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+
+Order Number: @Model.Payment.ChargeRequestID<br />
+Date: @Model.Payment.DateCreated.ToLocalTime().ToString("MMMM d, yyyy h:mm tt")<br />
+Name: @Model.User.FullName<br />
+Payment Method: @Model.Payment.Card.Type @string.Format("xxxx-{0}", @Model.Payment.Card.Last4)

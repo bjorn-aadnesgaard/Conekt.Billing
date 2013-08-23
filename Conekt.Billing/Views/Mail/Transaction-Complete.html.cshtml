@@ -1,0 +1,48 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+
+@{
+	Layout = "~/Views/Mail/Template.cshtml";
+	string header = "<h3 style='margin: 5px 0px 0px 0px; padding: 0px; font-weight: normal;'>{0}</h3>";
+	string separator = "style=\"border-top: 1px solid #EDEDED; padding-top: 10px;\"";
+
+	//Check if site is in test mode
+	bool isTestMode = Conekt.Billing.Configuration.ConfigurationManager.GetConfiguration().Settings.Mode.ToLower() == "test";
+	string testModeNofitication = "<strong>TEST MODE ENABLED</strong> - Set your web.config PaymentModule.Settings.Mode value to \"Live\" to enable live transactions and disable this message.";
+}
+
+@if(isTestMode)
+{
+	//Render sample text
+	<p>
+		@Html.Raw(@testModeNofitication)
+	</p>
+	<hr />
+}
+
+<h1 style="font-weight: normal;">Thank you.</h1>
+
+<p>
+	Your payment is complete.
+</p>
+
+<p>
+	This receipt confirms payment for your purchase. This order will appear on your credit card statement as @Model.Settings.Account.CreditAppearAs.
+</p>
+
+<p>
+	To contact us call @Model.Settings.Account.Phone or email <a href="mailto:@Model.Settings.Account.Email">@Model.Settings.Account.Email</a>.
+</p>
+
+@Html.Raw(string.Format(header, "Receipt"))
+
+<p @Html.Raw(separator)>
+	@{
+		Html.RenderPartial("Complete-Billing", @Model);
+	}
+</p>
+
+<div @Html.Raw(separator)>
+	@{
+		Html.RenderPartial("Complete-Summary", @Model);
+	}
+</div>

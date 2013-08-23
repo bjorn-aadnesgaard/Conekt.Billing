@@ -1,0 +1,169 @@
+﻿body {
+	padding-top: 60px;
+	padding-bottom: 5px;
+	}
+
+@media (max-width: 480px), (max-width: 767px), (max-width: 979px) {
+	body {
+		padding-top: 0px;
+		}
+	}
+
+.container {
+	max-width: 940px;
+	}
+
+/* #region Errors */
+.error {
+    color: #BD362F;
+	}
+
+label.error {
+	font-size: 11px;
+    margin-top: -5px;
+	margin-bottom: 5px;
+	}
+
+input.error,
+select.error {
+    color: #BD362F;
+    border: 1px solid #BD362F;
+	}
+
+textarea.error:focus,
+input[type="text"].error:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+	border-color: #BD362F;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px #E18C88;
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px #E18C88;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px #E18C88;
+	}
+/* #endregion */
+
+hr {
+	border-top: 1px solid #E1E1E1;
+	}
+
+label {
+	cursor: default;
+	}
+
+[class^="icon-"],
+[class*=" icon-"] {
+	background-image: url("/content/images/icons/glyphicons-halflings.png");
+	}
+
+.icon-white,
+.nav-pills > .active > a > [class^="icon-"],
+.nav-pills > .active > a > [class*=" icon-"],
+.nav-list > .active > a > [class^="icon-"],
+.nav-list > .active > a > [class*=" icon-"],
+.navbar-inverse .nav > .active > a > [class^="icon-"],
+.navbar-inverse .nav > .active > a > [class*=" icon-"],
+.dropdown-menu > li > a:hover > [class^="icon-"],
+.dropdown-menu > li > a:hover > [class*=" icon-"],
+.dropdown-menu > .active > a > [class^="icon-"],
+.dropdown-menu > .active > a > [class*=" icon-"],
+.dropdown-submenu:hover > a > [class^="icon-"],
+.dropdown-submenu:hover > a > [class*=" icon-"] {
+	background-image: url("/content/images/icons/glyphicons-halflings-white.png");
+	}
+
+.icon-gray {
+	background-image: url("/content/images/icons/glyphicons-halflings-gray.png");
+	}
+
+.modal .close {
+	margin: 5px 10px;
+	}
+
+.navbar-inverse li > a {
+	margin-top: 1px;
+	}
+
+.navbar-inverse li > a:hover > [class*=" icon-"] {
+	background-image: url("/content/images/icons/glyphicons-halflings-white.png");
+	}
+
+.navbar-inverse li > a > [class*=" icon-"] {
+	margin-top: 0px;
+	margin-right: 2px;
+	}
+
+.navbar {
+	text-transform: uppercase;
+	font-size: 95%;
+	}
+
+.navbar .brand {}
+
+.popover {
+	font-size: 85%;
+	}
+
+.popover.right {
+	margin-left: 15px;
+	}
+
+.popover-title {
+	background-color: #333;
+	color: #FFF;
+	margin: -2px;
+	padding: 9px 15px 9px 16px;
+	font-size: 105%;
+	border-bottom: 0px solid #111;
+	}
+
+.row,
+.row-fluid {
+	background: #F7F7F7;
+	}
+
+.shadow {
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+	}
+
+.tooltip.in {
+	opacity: .90;
+	filter: alpha(opacity=90);
+	}
+
+.tooltip-inner {
+	padding: 8px 10px;
+	text-align: left;
+	font-weight: normal !important;
+	color: #DDD;
+	}
+
+.well {
+	border: 0px solid #DDD;
+	background: none;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.05);
+	}
+
+.well-large {
+	padding: 25px;
+	padding-bottom: 0px;
+	margin-bottom: 26px;
+	}
+
+.well + hr {
+	margin: 0px;
+	}

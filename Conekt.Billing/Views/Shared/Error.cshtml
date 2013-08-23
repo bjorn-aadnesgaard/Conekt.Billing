@@ -1,0 +1,15 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using Conekt.Billing.Models;
+
+@{
+    Layout = null;
+	var notification = new Notification()
+	{
+		Status = Enums.Status.Error,
+		Message = "Sorry, there was an error with the Billing API. Please contact support if this error continues: " + Model.Exception.Message + " - " + Model.Exception.InnerException
+	};
+}
+
+@{
+	Html.RenderPartial("Notification", notification);
+}

@@ -1,0 +1,35 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+@using Conekt.Billing.Library;
+
+@*Render core javascript merchant files*@
+@switch ((Enums.Merchant)Enum.Parse(typeof(Enums.Merchant), @Model.Payment.Merchant))
+{
+	case Enums.Merchant.Stripe:
+		<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+		break;
+}
+
+<script type="text/javascript">
+	$paymentForm.submit(function (event) {
+		//Do nothing if the form is invalid
+		if (!$paymentForm.valid())
+			return false;
+
+		//Disable the submit button to prevent repeated clicks
+		$submitButton.attr("disabled", true);
+		
+		//Set spinner
+		$spinTarget.spin();
+
+		//Render merchant javascript
+		@switch ((Enums.Merchant)Enum.Parse(typeof(Enums.Merchant), @Model.Payment.Merchant))
+		{
+			case Enums.Merchant.Stripe:
+				Html.RenderPartial("Javascript-Merchant-Stripe", @Model);
+				break;
+		}
+
+		//Prevent the form from submitting with the default action
+		return false;
+	});
+</script>

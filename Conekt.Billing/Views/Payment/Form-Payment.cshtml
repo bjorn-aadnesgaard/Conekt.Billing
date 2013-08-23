@@ -1,0 +1,67 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+@using Conekt.Billing.Models.Form;
+@using Conekt.Billing.Models.Json;
+@using System.Globalization;
+
+@{
+	Layout = "~/Views/Payment/Form-Template-Section.cshtml";
+
+	//Form values
+	var card = new Item { Label = "Credit Card #", InputLimit = 50 };
+	var expireMonth = new Item { Label = "Exp. Month" };
+	var expireYear = new Item { Label = "Exp. Year" };
+	var security = new Item { Label = "Security #", InputLimit = 6, HelpText = "<p>For Visa and Mastercard, the 3 digit code can be found on the back of your card.</p><p>For AMEX, the 4 digit code can be found on the front of your card.</p>" };
+
+	bool isTestMode = Conekt.Billing.Configuration.ConfigurationManager.GetConfiguration().Settings.Mode.ToLower() == "test";
+
+	//Check if site is in test mode
+	if (isTestMode)
+	{
+		//Set transaction sample values
+		card.DefaultValue = "4242424242424242";
+		security.DefaultValue = "123";
+
+		<script type="text/javascript">
+			var $months = $("#@expireMonth.ID");
+			var $years = $("#@expireYear.ID");
+
+			$months.val("05");
+			$years.val("@(DateTime.Now.AddYears(5).Year)");
+		</script>
+	}
+}
+
+<legend class="title">Payment Information</legend>
+<div class="payment-methods">
+	We accept <img src='/images/payment/visa.gif' alt="Visa" title="Visa" /> <img src='/images/payment/mastercard.gif' alt="Mastercard" title="Mastercard" /> <img src='/images/payment/amex.gif' alt="American Express" title="American Express" /></div>
+<div class="item @card.CssClass">
+	<label for="@card.ID">@card.Label</label>
+	<input id="@card.ID" name="@card.ID" class="required creditcard span8" type="text" placeholder="@card.Placeholder" maxlength="@card.InputLimit" value="@card.DefaultValue" />
+</div>
+<div class="item expires row-fluid">
+	<span class="span3">
+		<label for="@expireMonth.ID">@expireMonth.Label</label>
+		<select id="@expireMonth.ID" name="@expireMonth.ID" class="required" placeholder="@expireMonth.Placeholder">
+			<option value=""></option>
+
+			@for (var i = 1; i <= 12; i++)
+			{
+				<option value="@string.Format("{0:00}", i)">@string.Format("{0:00} - {1}", i, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i))</option>
+			}
+		</select>
+	</span>
+	<span class="span2">
+		<label for="@expireYear.ID">@expireYear.Label</label>
+		<select id="@expireYear.ID" name="@expireYear.ID" class="required" placeholder="@expireYear.Placeholder">
+			<option value=""></option>
+			@for (var i = 0; i <= 10; i++)
+			{
+				<option value="@(DateTime.Now.AddYears(i).Year)">@(DateTime.Now.AddYears(i).Year)</option>
+			}
+		</select>	</span>	<span class="span3">
+		<label for="@security.ID">
+			@security.Label
+			<a href="#" class="icon icon-16 icon-help" rel="popover" data-placement="right" data-title="@security.Label" data-content="@security.HelpText"></a>
+		</label>
+		<input id="@security.ID" name="@security.ID" class="required number span8" type="text" placeholder="@security.Placeholder" maxlength="@security.InputLimit" value="@security.DefaultValue" />
+	</span></div>

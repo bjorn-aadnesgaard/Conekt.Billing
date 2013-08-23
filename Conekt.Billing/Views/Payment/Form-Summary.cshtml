@@ -1,0 +1,62 @@
+﻿@model Conekt.Billing.Models.Json.JsonTransaction
+@using Conekt.Billing.Models.Json;
+
+@{
+	//If the summary is disabled prevent rendering content
+	if (Model.Settings.DisableSummary) { return; };	
+
+	Layout = "~/Views/Payment/Form-Template-Section.cshtml";
+
+	//Summary values
+	decimal totalTax = 0;
+}
+
+@if (Model.Products != null && Model.Products.Count() > 0)
+{
+	<legend class="title">Purchase Summary</legend>
+	<div class="summary">
+		<ul class="list span8">
+			@{
+				foreach (Product product in @Model.Products)
+				{
+					<li class="item">
+						<div class="amount">@string.Format("{0:C}", product.Quantity * product.UnitPrice)</div>
+						<div class="name">@product.Name: @product.Quantity</div>
+					</li>
+
+					totalTax += product.TotalTax;
+				}
+			}
+
+			<li class="item total">
+				<ul class="list">
+					@*Subtotal*@
+					<li class="item">
+						<div class="amount">@string.Format("{0:C}", @Model.Payment.Amount - totalTax)</div>
+						<div class="name">Subtotal:</div>
+					</li>
+
+					@*Tax Total*@
+					<li class="item">
+						<div class="amount">@string.Format("{0:C}", totalTax)</div>
+						<div class="name">Tax:</div>
+					</li>
+
+					@*Total*@
+					<li class="item item-total">
+						<div class="amount">@string.Format("{0:C}", @Model.Payment.Amount)</div>
+						<div class="name">
+							Total
+							@if (Model.Payment.Currency != null)
+							{
+								<span class="currency">
+									@Model.Payment.Currency:
+								</span>
+							}
+						</div>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+}
