@@ -13,6 +13,13 @@ TestResults
 *.user
 *.sln.docstates
 
+# Local development files
+loaderio-*.txt
+Web.Local.config
+*.pubxml
+TODO.txt
+.svn
+
 # Build results
 [Dd]ebug/
 [Rr]elease/
