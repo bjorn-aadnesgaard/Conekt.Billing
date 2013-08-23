@@ -156,6 +156,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\highlight.css" />
     <Content Include="Content\images\background.png" />
+    <Content Include="Content\images\icons\glyphicons-halflings-gray.png" />
+    <Content Include="Content\images\icons\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\icons\glyphicons-halflings.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
     <Content Include="favicon.png" />
